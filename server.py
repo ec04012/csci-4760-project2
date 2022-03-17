@@ -1,8 +1,11 @@
 #import socket module
+from email import message
 from socket import *
 import sys # In order to terminate the program
+import os
 
 # Source https://www.codementor.io/@joaojonesventura/building-a-basic-http-server-from-scratch-in-python-1cedkg0842
+# https://www.geeksforgeeks.org/python-os-path-join-method/
 
 # Define socket host and port
 SERVER_HOST = '0.0.0.0'
@@ -21,15 +24,16 @@ while True:
     # Wait for client connections
     connectionSocket, addr = serverSocket.accept()
     try:
-        message = 'HTTP/1.0 200 OK\n\nHello World'
-        #filename = message.split()[1]
-        #f = open(filename[1:])
-        #outputdata = #Fill in start #Fill in end
+        message = connectionSocket.recv(1024).decode()
+        print(message)
+        filename = message.split()[1]
+        with open(os.path.join("./", filename[1:])) as f:
+            outputdata = f.read()
         #Send one HTTP header line into socket
-        #Fill in start
-        #Fill in end
+        response = 'HTTP/1.0 200 OK\n\n'
+        connectionSocket.send(response.encode())
         #Send the content of the requested file to the client
-        connectionSocket.send(message.encode())
+        connectionSocket.send(outputdata.encode())
         connectionSocket.close()
         '''
         for i in range(0, len(outputdata)):
