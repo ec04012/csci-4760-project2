@@ -3,10 +3,19 @@ from email import message
 from socket import *
 import sys # In order to terminate the program
 import os
+import atexit
 
 # Source
 # https://www.codementor.io/@joaojonesventura/building-a-basic-http-server-from-scratch-in-python-1cedkg0842
 # https://www.geeksforgeeks.org/python-os-path-join-method/
+# https://docs.python.org/3/library/atexit.html
+
+# graceful exit in case of crash or other disruption
+def graceful_exit():
+    serverSocket.close()
+    print("Closing Server")
+    sys.exit()#Terminate the program
+atexit.register(graceful_exit)
 
 # Define socket host and port
 SERVER_HOST = '0.0.0.0'
@@ -14,7 +23,7 @@ SERVER_PORT = 8000
 
 serverSocket = socket(AF_INET, SOCK_STREAM)
 #Prepare a sever socket
-#serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # what does this line do?
+serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1) # what does this line do?
 serverSocket.bind((SERVER_HOST, SERVER_PORT))
 serverSocket.listen(1)
 ServerName = "HTTP Server"
@@ -55,5 +64,4 @@ while True:
         print("ERROR: File Not Found")
         print("User requested " + filename)
         print("")
-serverSocket.close()
-sys.exit()#Terminate the program after sending the corresponding dat
+graceful_exit()
