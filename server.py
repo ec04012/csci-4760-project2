@@ -37,8 +37,8 @@ t = threading.Thread(target=animate, daemon=True)
 t.start()
 
 # Define socket host and port
-SERVER_HOST = '0.0.0.0'
-SERVER_PORT = 8000
+SERVER_HOST = '127.0.0.1'
+SERVER_PORT = 8080
 
 serverSocket = socket(AF_INET, SOCK_STREAM)
 #Prepare a sever socket
@@ -47,7 +47,7 @@ serverSocket.bind((SERVER_HOST, SERVER_PORT))
 serverSocket.listen(1)
 ServerName = "HTTP Server"
 print(ServerName + " is now ONLINE")
-print('Listening on port %s ...' % SERVER_PORT)
+print('Listening on %s:%s ...' % (SERVER_HOST, SERVER_PORT))
 print("")
 
 while True:
