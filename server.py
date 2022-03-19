@@ -81,7 +81,9 @@ while True:
     except IOError:
         stopAnimating()
         #Send response message for file not found
-        response = 'HTTP/1.1 404 NOT FOUND\n\nFile not found'
+        response = 'HTTP/1.1 404 NOT FOUND\n\n'
+        if "Firefox" in message:
+            response = response + "File not found"
         connectionSocket.send(response.encode())
         #Close client socket
         connectionSocket.close()
